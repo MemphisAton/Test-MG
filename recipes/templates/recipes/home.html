@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница поварской книги</title>
+</head>
+<body>
+    <h1>Добро пожаловать в поварскую книгу!</h1>
+
+
+    <h2>Продукты</h2>
+        <a href="{% url 'add_or_update_product' %}"><button>Добавить продукт</button></a>
+
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }} - Количество в базе: {{ product.quantity }} {{ product.unit }}, Использован в рецептах: {{ product.recipe_count }} раз(а)</li>
+        {% empty %}
+            <li>Продукты не найдены.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Рецепты</h2>
+    <a href="{% url 'add_recipe' %}"><button>Добавить рецепт</button></a>
+
+    <ul>
+        {% for recipe in recipes %}
+            <li>
+            <a href="{% url 'edit_recipe' recipe.id %}">{{ recipe.name }}</a>
+                <ul>
+                    {% for item in recipe.recipeproduct_set.all %}
+                        <li>{{ item.product.name }}: {{ item.quantity }} {{ item.product.unit }}</li>
+                    {% empty %}
+                        <li>В этом рецепте нет продуктов.</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% empty %}
+            <li>Рецепты не найдены.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

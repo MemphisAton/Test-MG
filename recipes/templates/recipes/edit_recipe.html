@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить рецепт</title>
+</head>
+<body>
+    <h1>Добавить новый рецепт</h1>
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ formset.as_p }}
+    <button type="submit">Сохранить изменения</button>
+</form>
+<form method="post" action="{% url 'delete_recipe' recipe_id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Удалить рецепт</button>
+</form>
+</body>
+</html>

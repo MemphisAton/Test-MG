@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить рецепт</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Добавить новый рецепт</h1>
+    <form method="post" id="recipeForm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div id="formset">
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div class="formset-form">
+                    {{ form.as_p }}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add_more">Добавить еще продукт</button>
+        <button type="submit">Сохранить рецепт</button>
+    </form>
+
+    <div id="empty_form" style="display:none">
+        {{ formset.empty_form.as_p | safe }}
+    </div>
+
+<script>
+    $(document).ready(function() {
+        $('#add_more').click(function() {
+            var totalForms = $('#id_recipeproduct_set-TOTAL_FORMS').val();
+            var newFormIndex = parseInt(totalForms, 10);  // Убедитесь, что индекс - целое число
+
+            var newForm = $('#empty_form').html().replace(/__prefix__/g, newFormIndex);
+            $('#formset').append(newForm);
+
+            $('#id_recipeproduct_set-TOTAL_FORMS').val(newFormIndex + 1);
+        });
+    });
+</script>
+</body>
+</html>
